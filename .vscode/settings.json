@@ -1,0 +1,13 @@
+{
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "chat.tools.terminal.autoApprove": {
+        "/^\\.\\\\\\.venv\\\\Scripts\\\\activate ; python --version ; which python$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^\\.\\\\\\.venv\\\\Scripts\\\\activate ; pip install pymongo$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
