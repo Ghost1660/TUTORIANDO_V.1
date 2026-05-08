@@ -448,7 +448,306 @@ def prueba_diagnostico_aprendizaje(username):
     return False  # No completado aún
 
 # --- 4. CONFIGURACIÓN INICIAL ---
-st.set_page_config(page_title="TutorIAndo", page_icon="🎓")
+st.set_page_config(page_title="TutorIAndo - Plataforma Educativa", page_icon="🎓", layout="wide")
+
+# --- CONFIGURACIÓN DE TEMA ---
+if "tema" not in st.session_state:
+    st.session_state.tema = "claro"
+
+# Selector de tema en la barra lateral
+with st.sidebar:
+    st.header("Configuración")
+    tema_seleccionado = st.selectbox(
+        "Tema de la aplicación",
+        ["claro", "oscuro"],
+        index=0 if st.session_state.tema == "claro" else 1,
+        key="tema_selector"
+    )
+    if tema_seleccionado != st.session_state.tema:
+        st.session_state.tema = tema_seleccionado
+        st.rerun()
+
+# --- FUNCIÓN PARA GENERAR CSS SEGÚN TEMA ---
+def get_css(tema):
+    if tema == "claro":
+        return """
+<style>
+    .stApp {
+        background-color: #e9eff5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #2c3e50;
+    }
+    .block-container {
+        background-color: #ffffff;
+        border: 1px solid #e3e6ea;
+        border-radius: 24px;
+        box-shadow: 0 24px 80px rgba(79, 95, 111, 0.08);
+        padding: 36px 40px;
+        margin: 28px auto;
+        max-width: 960px;
+    }
+    .stTitle {
+        color: #2c3e50;
+        font-weight: 800;
+    }
+    .stHeader {
+        color: #556678;
+    }
+    .stMarkdown {
+        color: #58656f;
+        line-height: 1.75;
+    }
+    .stButton>button {
+        background-color: #2d6a88;
+        color: #ffffff;
+        border: none;
+        border-radius: 12px;
+        padding: 14px 24px;
+        font-size: 16px;
+        box-shadow: 0 10px 30px rgba(45, 106, 136, 0.18);
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .stButton>button:hover {
+        background-color: #1f5068;
+        transform: translateY(-1px);
+    }
+    .stTextInput>div>div>input, .stTextArea>div>div>textarea {
+        border-radius: 14px;
+        border: 1px solid #d9dfe6;
+        padding: 14px 16px;
+        background-color: #f9fbfd;
+        color: #2c3e50;
+        font-size: 16px;
+        box-shadow: inset 0 1px 2px rgba(16, 24, 40, 0.06);
+    }
+    .stTextInput>div>div>input::placeholder, .stTextArea>div>div>textarea::placeholder {
+        color: #8598a8;
+    }
+    .stTextInput>div>div>button {
+        background-color: #2d6a88;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 6px 10px;
+        margin-right: 6px;
+    }
+    .stTextInput>div>div>button:hover {
+        background-color: #1f5068;
+    }
+    .stTextInput>div>div>button svg {
+        color: white;
+        fill: white;
+    }
+    .stSelectbox>div>div>select {
+        border-radius: 14px;
+        border: 1px solid #d9dfe6;
+        padding: 14px 16px;
+        background-color: #f9fbfd;
+        color: #2c3e50;
+        font-size: 16px;
+        box-shadow: inset 0 1px 2px rgba(16, 24, 40, 0.06);
+    }
+    .stRadio>div {
+        background-color: #f7fafc;
+        padding: 18px;
+        border-radius: 14px;
+        border: 1px solid #dfe7ee;
+        color: #2c3e50;
+    }
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 10px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        background-color: #f7fafc;
+        border-radius: 12px 12px 0 0;
+        padding: 14px 24px;
+        color: #2c3e50;
+        border: 1px solid #dfe7ee;
+        border-bottom: none;
+    }
+    .stTabs [data-baseweb="tab"][aria-selected="true"] {
+        background-color: #2f80ed;
+        color: white;
+        border-color: #2f80ed;
+    }
+    .stForm {
+        background-color: #ffffff;
+        border: 1px solid #e3e6ea;
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 12px 40px rgba(79, 95, 111, 0.08);
+    }
+    .stForm button,
+    .stForm input[type="submit"] {
+        background-color: #16a085;
+        color: white;
+        border: none;
+        border-radius: 14px;
+        padding: 12px 22px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.25s ease, transform 0.2s ease;
+    }
+    .stForm button:hover,
+    .stForm input[type="submit"]:hover {
+        background-color: #13826f;
+        transform: translateY(-1px);
+    }
+    .stForm label,
+    .stTextInput label,
+    .stSelectbox label,
+    .stRadio label,
+    .stCheckbox label,
+    .stMarkdown {
+        color: #22313f;
+    }
+    .stForm legend,
+    .stForm h2,
+    .stForm h3,
+    .stForm h4 {
+        color: #15202b;
+    }
+    .stTextInput>div>label,
+    .stSelectbox>div>label,
+    .stRadio>div>label {
+        color: #22313f;
+        font-weight: 600;
+    }
+    .stSuccess {
+        background-color: #e8f8f5;
+        color: #1f6654;
+        border: 1px solid #b7e3d7;
+        border-radius: 12px;
+        padding: 14px;
+    }
+    .stError {
+        background-color: #fdecea;
+        color: #912d2b;
+        border: 1px solid #f2c7c4;
+        border-radius: 12px;
+        padding: 14px;
+    }
+    .stWarning {
+        background-color: #fff7eb;
+        color: #7a5f0f;
+        border: 1px solid #f7ddb0;
+        border-radius: 12px;
+        padding: 14px;
+    }
+    .stSidebar {
+        background-color: #ffffff;
+        border-right: 1px solid #e3e6ea;
+    }
+    .css-1v0mbdj {
+        box-shadow: none;
+    }
+</style>
+"""
+    else:  # tema oscuro
+        return """
+<style>
+    .stApp {
+        background-color: #2c3e50;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #ecf0f1;
+    }
+    .stTitle {
+        color: #ecf0f1;
+        font-weight: bold;
+    }
+    .stHeader {
+        color: #bdc3c7;
+    }
+    .stButton>button {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+    .stButton>button:hover {
+        background-color: #3a7ad0;
+    }
+    .stTextInput>div>div>input, .stTextArea>div>div>textarea {
+        border-radius: 8px;
+        border: 1px solid #7f8c8d;
+        padding: 10px;
+        background-color: #34495e;
+        color: #ecf0f1;
+    }
+    .stTextInput>div>div>button {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 10px;
+        margin-right: 6px;
+    }
+    .stTextInput>div>div>button:hover {
+        background-color: #3a7ad0;
+    }
+    .stTextInput>div>div>button svg {
+        color: white;
+        fill: white;
+    }
+    .stSelectbox>div>div>select {
+        border-radius: 8px;
+        border: 1px solid #7f8c8d;
+        padding: 10px;
+        background-color: #34495e;
+        color: #ecf0f1;
+    }
+    .stRadio>div {
+        background-color: #34495e;
+        padding: 10px;
+        border-radius: 8px;
+        color: #ecf0f1;
+    }
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        background-color: #34495e;
+        border-radius: 8px 8px 0 0;
+        padding: 10px 20px;
+        color: #ecf0f1;
+    }
+    .stTabs [data-baseweb="tab"][aria-selected="true"] {
+        background-color: #e74c3c;
+        color: white;
+    }
+    .stSuccess {
+        background-color: #27ae60;
+        color: #d5dbdb;
+        border: 1px solid #229954;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    .stError {
+        background-color: #e74c3c;
+        color: #fadbd8;
+        border: 1px solid #c0392b;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    .stWarning {
+        background-color: #f39c12;
+        color: #2c3e50;
+        border: 1px solid #e67e22;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    .stSidebar {
+        background-color: #34495e;
+        color: #ecf0f1;
+    }
+</style>
+"""
+
+# --- APLICAR CSS ---
+st.markdown(get_css(st.session_state.tema), unsafe_allow_html=True)
 
 if "autenticado" not in st.session_state:
     st.session_state.autenticado = False
@@ -947,5 +1246,5 @@ if not st.session_state.is_admin:
                     st.session_state.messages.append({"role": "assistant", "content": respuesta.content})
                     agregar_mensaje_chat(st.session_state.nombre_usuario, "assistant", respuesta.content)
                 except Exception as e:
-                    st.error(f"Error técnico: {e}")
+                    st.error(f"Error técnico: {e}") 
                     
